@@ -44,7 +44,7 @@ let updateUser = async (req, res) => {
     })
 }
 let deleteUser = async (req, res) => {
-    let userId = req.body.userId;
+    let userId = req.params.id;
     if (!userId) {
         return res.status(500).json({
             message: "missing input parameter",
