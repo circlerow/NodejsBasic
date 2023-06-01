@@ -13,7 +13,7 @@ let getHomepage = (req, res) => {
             }
             )
             console.log('check data', JSON.stringify(data));
-            res.render('index.ejs', { dataUser: JSON.stringify(data) });
+            res.render('index.ejs', { dataUser: data });
         }
     );
 
