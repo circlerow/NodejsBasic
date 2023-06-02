@@ -29,6 +29,8 @@ const imageFilter = function (req, file, cb) {
 
 let upload = multer({ storage: storage, fileFilter: imageFilter });
 
+let upload1 = multer({ storage: storage, fileFilter: imageFilter }).array('multiple_images', 3);
+
 const initWebRoute = (app) => {
     router.get('/', homeController.getHomepage);
     router.get('/detail/user/:id', homeController.getDetailPage);
@@ -38,6 +40,18 @@ const initWebRoute = (app) => {
     router.post('/update-user', homeController.postUpdateUser);
     router.get('/upload', homeController.getUpLoadFilePage);
     router.post('/upload-profile-pic', upload.single('profile_pic'), homeController.handleUploadFile);
+    router.post('/upload-multiple-images', (req, res, next) => {
+        upload1(req, res, (err) => {
+            if (err instanceof multer.MulterError && err.code === 'LIMIT_UNEXPECTED_FILE') {
+                return res.send('Too many files to upload.');
+            }
+            else if (err) {
+                return res.send(err);
+            }
+            return next();
+        }
+        )
+    }, homeController.handleUploadMultipleFiles);
     router.get('/about', (req, res) => {
         res.send('Hello World!')
     })
